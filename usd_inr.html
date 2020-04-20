@@ -1,0 +1,122 @@
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>currency</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css'>
+  <link rel="stylesheet" type="text/css" href="userlogin.css">
+  
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+
+  <div class="navigation-bar">
+  
+  
+    <div id="navigation-container">
+
+      <img src="logobook.jpg.jpeg">
+
+      <ul>
+        <li><a href="pagewithnav.html">Home</a></li>
+        <!--li><a href="about.html">About</a></li>
+        <li><a href="loginadmin.html">Admin</a></li-->
+        <li><a href="services.html">Services</a></li>
+        <li id = "help"><a href="contactus.html">Contact Us</a></li>
+        <li><a href = "help.html">Help</a></li>
+        <!--li><a href="more.php">More</a></li-->
+        <li><a href="userlogin.php">Logout</a></li>
+        
+     </ul>
+  </div>
+</div>
+</div>
+
+<center>
+    <h3 style="color:white">USD-INR CONVERSION</h3><br><br>
+<div style="width: 100%;
+padding: 12px 20px;
+margin: 8px 0;
+display: inline-block;
+border-radius: 4px;
+box-sizing: border-box;">
+	<div >
+		<select id="from_currency">
+		<option value="INR">INR</option>
+
+		<option value="USD" selected>USD</option>
+		
+        </select>
+        <br><br>
+		<input type="number" style="width: 50%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border-radius: 4px;
+        box-sizing: border-box;" id="from_ammount" placeholder="0" value=1 >
+         <br><br>
+	</div>
+	<div class="middle">
+		<!--button id="exchange">
+           
+		i class="fas fa-exchange-alt"></i>
+		</button-->
+		
+    </div>
+    <br><br>
+	<div>
+		<select id="to_currency">
+	
+		<option value="INR" selected>INR</option>
+		
+		<option value="USD">USD</option>
+		
+        </select>
+        <br><br>
+		<input type="number" style="width: 50%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border-radius: 4px;
+        box-sizing: border-box;" id="to_ammount" placeholder="0" />
+    </div>
+    <div class="rate" id="rate" style="color:white"></div>
+</div>
+</center>
+  <script>
+      const from_currencyEl = document.getElementById('from_currency');
+const from_ammountEl = document.getElementById('from_ammount');
+const to_currencyEl = document.getElementById('to_currency');
+const to_ammountEl = document.getElementById('to_ammount');
+const rateEl = document.getElementById('rate');
+const exchange = document.getElementById('exchange');
+ 
+from_currencyEl.addEventListener('change', calculate);
+from_ammountEl.addEventListener('input', calculate);
+to_currencyEl.addEventListener('change', calculate);
+to_ammountEl.addEventListener('input', calculate);
+ 
+exchange.addEventListener('click', () => {
+	const temp = from_currencyEl.value;
+	from_currencyEl.value = to_currencyEl.value;
+	to_currencyEl.value = temp;
+	calculate();
+});
+ 
+function calculate() {
+	const from_currency = from_currencyEl.value;
+	const to_currency = to_currencyEl.value;
+	
+	fetch(`https://api.exchangerate-api.com/v4/latest/${from_currency}`)
+		.then(res => res.json())
+		.then(res => {
+		const rate = res.rates[to_currency];
+		rateEl.innerText = `1 ${from_currency} = ${rate} ${to_currency}`
+		to_ammountEl.value = (from_ammountEl.value * rate).toFixed(2);
+	})
+}
+ 
+calculate();
+  </script>
+ 
+</body>
+</html>
